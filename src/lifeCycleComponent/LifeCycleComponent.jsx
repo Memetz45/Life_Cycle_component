@@ -6,18 +6,34 @@ import BasicExample from "./Cards";
 
 class LifeCycle extends Component {
     state = {
+        errorMessage:'',
         post: []
     }
     componentDidMount() {
-        fetch('https://newsapi.org/v2/everything?apiKey=e78496aa34f54687b5fb824a75ebf5d3&q=persib')
+
+    }
+    changeNews = () => {
+        const inputKeyword = document.querySelector('.input-keyword');
+        fetch('https://newsapi.org/v2/everything?apiKey=e78496aa34f54687b5fb824a75ebf5d3&q=' + inputKeyword.value)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                this.setState({
-                    post: res.articles
-                })
+                if(res.totalResults>0){
+                    this.setState({
+                        post: res.articles
+                    })
+                }else{
+                    this.setState({
+                        errorMessage: this.state.errorMessage = 'Data Tidak Ditemukan....'
+                    })
+                }
             });
     }
+    // onKeyUp(event){
+    //     if(event.charCode === 13){
+    //         this.changeNews
+    //     }
+    // }
     render() {
         console.log('render');
         return (
@@ -36,12 +52,14 @@ class LifeCycle extends Component {
                                 placeholder="Cari Tokoh, Topik, atau Peristiwa"
                                 aria-label="Recipient's username"
                                 aria-describedby="button-addon2"
+                                // onKeyUp={this.onKeyUp}
                             />
-                            <Button className="btn btn-primary" id="button">
+                            <Button className="btn btn-primary" id="button" onClick={this.changeNews}>
                                 Search
                             </Button>
                         </InputGroup>
                     </Col>
+                    <h1></h1>
                 </Row>
                 <Row>
                     {
@@ -56,6 +74,7 @@ class LifeCycle extends Component {
                                 link={post.url} />
                         })
                     }
+                    <h1 className="text-center">{this.state.errorMessage}</h1>
                 </Row>
             </Container>
         )
