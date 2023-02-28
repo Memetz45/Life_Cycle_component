@@ -9,9 +9,7 @@ class LifeCycle extends Component {
         errorMessage:'',
         post: []
     }
-    componentDidMount() {
-
-    }
+    
     changeNews = () => {
         const inputKeyword = document.querySelector('.input-keyword');
         fetch('https://newsapi.org/v2/everything?apiKey=e78496aa34f54687b5fb824a75ebf5d3&q=' + inputKeyword.value)
